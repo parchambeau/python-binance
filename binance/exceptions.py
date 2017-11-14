@@ -15,6 +15,14 @@ class BinanceAPIException(Exception):
         return 'APIError(code=%s): %s' % (self.code, self.message)
 
 
+class BinanceRequestException(Exception):
+    def __init__(self, message):
+        self.message = message
+
+    def __str__(self):
+        return 'BinanceRequestException: %s' % self.message
+
+
 class BinanceOrderException(Exception):
 
     def __init__(self, code, message):
@@ -58,3 +66,13 @@ class BinanceOrderInactiveSymbolException(BinanceOrderException):
     def __init__(self, value):
         message = "Attempting to trade an inactive symbol %s" % value
         super(BinanceOrderInactiveSymbolException, self).__init__(-1013, message)
+
+
+class BinanceWithdrawException(Exception):
+    def __init__(self, message):
+        if message == u'参数异常':
+            message = 'Withdraw to this address through the website first'
+        self.message = message
+
+    def __str__(self):
+        return 'BinanceWithdrawException: %s' % self.message
